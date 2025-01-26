@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruhaan's Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            margin-right: 1.5rem;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .skill-category {
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style: disc;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .tech-list span {
+            background: #f0f2f5;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .ai-pair {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .ai-pair span:nth-child(odd) {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .ai-pair span:nth-child(even) {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .ai-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tech-list {
+                gap: 0.5rem;
+            }
+            
+            nav {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav a {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">home</a>
+        <a href="project.html">projects</a>
+        <a href="contact.html">contact</a>
+        <a href="blog.html">blog</a>
+    </nav>
+
+    <section id="about">
+        <h2>About me</h2>
+        <p>
+            Hi! I'm Ruhaan AI enthusiast(psyco) with a focus on neural networks.<br>
+            I'm passionate about reading programming books and creating new tech ideas.<br>
+            I am tring to optimizing Transformer mechanism.
+        </p>
+    </section>
+
+    <section id="skills">
+        <h2>Skills</h2>
+        
+        <div class="skill-category">
+            <h3>Technical:</h3>
+            <ul>
+                <li>Strong background in mathematics (used in AI/ML/DL).</li>
+                <li>Great understanding of deep learning core concepts and advanced topics from recent advancements.</li>
+            </ul>
+        </div>
+
+        <div class="skill-category">
+            <h3>Soft:</h3>
+            <ul>
+                <li>Hunger of Learning somthing new.</li>
+                <li>I excel at learning through observation, quickly understanding complex concepts, and improving upon them to deliver creative and effective solutions.</li>
+                <li>Modrate time management and organization but I can complete my task on time.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="programming">
+        <h2>Programming languages/frameworks:</h2>
+        <div class="tech-list">
+            <span>Python</span>
+            <span>PyTorch</span>
+            <span>C/C++</span>
+            <span>Huggingface</span>
+        </div>
+    </section>
+
+    <section id="ai-distribution">
+        <h2>AI Distribution by Topic</h2>
+        <div class="ai-grid">
+            <!-- Row 1 -->
+            <div class="ai-pair">
+                <span>Computer Vision</span>
+                <span>67%</span>
+                <span>Natural Language Processing</span>
+                <span>50%</span>
+            </div>
+            <!-- Row 2 -->
+            <div class="ai-pair">
+                <span>Large Language Models</span>
+                <span>55%</span>
+                <span>Generative AI</span>
+                <span>65%</span>
+            </div>
+            <!-- Row 3 -->
+            <div class="ai-pair">
+                <span>Auto Encoders</span>
+                <span>66%</span>
+                <span>Machine Learning Algorithms</span>
+                <span>45%</span>
+            </div>
+            <!-- Row 5 -->
+            <div class="ai-pair">
+                <span>Graph NNs</span>
+                <span>14%</span>
+                <span>Recurrent Networks</span>
+                <span>55%</span>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruhaan's Portfolio - blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            margin-right: 1.5rem;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .blog-card {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+            transition: transform 0.2s;
+        }
+
+        .blog-card:hover {
+            transform: translateX(5px);
+        }
+
+        .blog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1rem;
+        }
+
+        .blog-title {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .blog-date {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .blog-content {
+            color: #34495e;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .citation {
+            text-align: center;
+            margin-top: 3rem;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .blog-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            nav {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav a {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">home</a>
+        <a href="project.html">projects</a>
+        <a href="contact.html">contact</a>
+        <a href="blog.html">blog</a>
+    </nav>
+
+    <section id="blog">
+        <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 0.5rem; margin-bottom: 2rem;">
+            Technical Blog
+        </h2>
+
+        <div class="blog-card">
+            <div class="blog-header">
+                <h3 class="blog-title">Linformer: Making Transformers Linear, Efficient, and Scalable</h3>
+                <span class="blog-date">Dec 2024</span>
+            </div>
+            <p class="blog-content">Linformer: Making Transformers Linear, Efficient, and Scalable</p>
+            <a href="https://medium.com/@ruhaan838/linformer-making-transformers-linear-efficient-and-scalable-84f21880ea02" class="read-more">Read Full Article →</a>
+        </div>
+
+        <div class="blog-card">
+            <div class="blog-header">
+                <h3 class="blog-title">Why We Need “Distributed Training” in Deep Learning? 🤔</h3>
+                <span class="blog-date">Dec 2024</span>
+            </div>
+            <p class="blog-content">
+                Data parallelism and Model parallelism
+            </p>
+            <a href="https://ruhaan838.medium.com/why-we-need-distributed-training-in-deep-learning-bf48031c3d98" class="read-more">Read Full Article →</a>
+        </div>
+
+        <div class="blog-card">
+            <div class="blog-header">
+                <h3 class="blog-title">Role of Positional Embedding
+                    </h3>
+                <span class="blog-date">Jan 2025</span>
+            </div>
+            <p class="blog-content">
+                Positional Embedding the real brain of the Transformers
+            </p>
+            <a href="https://ruhaan838.medium.com/role-of-positional-embedding-dfaacf6387a5" class="read-more">Read Full Article →</a>
+        </div>
+    </section>
+
+    <div class="citation">
+        https://chat.deepseek.com/ is made this.
+    </div>
+</body>
+</html>
