@@ -5,7 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ruhaan's Portfolio - Projects</title>
   <style>
-    /* (Your existing CSS styles) */
+    /* Global styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    body {
+      background: #f0f2f5;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    nav {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    nav a {
+      margin-right: 1.5rem;
+      text-decoration: none;
+      color: #2c3e50;
+      font-weight: 500;
+    }
+    section {
+      background: white;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 0.5rem;
+    }
+    /* Project card styles */
     .project-card {
       display: block;
       margin-bottom: 2rem;
@@ -49,62 +90,54 @@
 
   <section id="projects">
     <h2>My Projects</h2>
-    <!-- Projects will be injected here automatically -->
+    <!-- Dynamic project cards will be injected here -->
   </section>
 
   <script>
-    // Wait for the DOM to load before executing the script
+    // Execute once the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function () {
       async function loadRepos() {
         try {
-          // Fetch the repositories from your GitHub account
+          // Fetch your GitHub repositories
           const response = await fetch('https://api.github.com/users/Ruhaan838/repos');
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
           const repos = await response.json();
 
-          // Optionally sort repos by updated date
+          // Sort repos by last updated date (optional)
           repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
 
-          // Get the container element where projects will be appended
+          // Get the container where project cards will be inserted
           const projectsSection = document.getElementById('projects');
 
-          // Loop through each repository and create a project card
+          // Create a project card for each repository
           repos.forEach(repo => {
-            // Create the link element that will serve as the project card
             const projectLink = document.createElement('a');
             projectLink.href = repo.html_url;
             projectLink.target = '_blank';
             projectLink.className = 'project-card';
 
-            // Create the header div for the project title
             const headerDiv = document.createElement('div');
             headerDiv.className = 'project-header';
 
-            // Create and append the project title
             const titleSpan = document.createElement('span');
             titleSpan.className = 'project-title';
             titleSpan.textContent = repo.name;
             headerDiv.appendChild(titleSpan);
-
-            // Append the header to the project card
             projectLink.appendChild(headerDiv);
 
-            // Create and append the project description
             const descriptionPara = document.createElement('p');
             descriptionPara.className = 'project-description';
             descriptionPara.textContent = repo.description || 'No description available.';
             projectLink.appendChild(descriptionPara);
 
-            // Append the project card to the projects section
             projectsSection.appendChild(projectLink);
           });
         } catch (error) {
           console.error('Failed to fetch repositories:', error);
         }
       }
-
       loadRepos();
     });
   </script>
