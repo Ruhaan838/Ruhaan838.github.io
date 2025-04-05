@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruhaan's Portfolio - blog</title>
     <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --text-color: #333;
+            --nav-bg: #fff;
+            --section-bg: #fff;
+            --accent-color: #3498db;
+            --heading-color: #2c3e50;
+            --skill-bg: #f0f2f5;
+            --ai-pair-bg: #f8f9fa;
+        }
+    
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --text-color: #e0e0e0;
+                --nav-bg: #2d2d2d;
+                --section-bg: #2d2d2d;
+                --heading-color: #7ab8f6;
+                --skill-bg: #3d3d3d;
+                --ai-pair-bg: #3d3d3d;
+                --accent-color: #7ab8f6;
+            }
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,8 +37,8 @@
         }
 
         body {
-            background: #f0f2f5;
-            color: #333;
+            background: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.6;
             padding: 20px;
             max-width: 1200px;
@@ -22,25 +46,52 @@
         }
 
         nav {
-            background: #fff;
+            background: var(--nav-bg);
             padding: 1rem;
             border-radius: 8px;
             margin-bottom: 2rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            position: relative;
         }
 
         nav a {
             margin-right: 1.5rem;
             text-decoration: none;
-            color: #2c3e50;
+            color: var(--heading-color);
             font-weight: 500;
         }
 
+        .theme-toggle {
+            background-color: var(--accent-color);
+            color: white;
+            border: 2px solid #333;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 1.2rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: float 3s ease-in-out infinite;  
+        }
+
+        .theme-toggle:hover {
+            background-color: darken(var(--accent-color), 10%);
+        }
+
         .blog-card {
-            background: white;
+            background: var(--section-bg);
             padding: 2rem;
             margin-bottom: 2rem;
-            border-left: 4px solid #3498db;
+            border-left: 4px solid var(--accent-color);
             border-radius: 4px;
             transition: transform 0.2s;
         }
@@ -57,7 +108,7 @@
         }
 
         .blog-title {
-            color: #2c3e50;
+            color: var(--heading-color);
             font-size: 1.2rem;
             font-weight: 600;
         }
@@ -68,12 +119,12 @@
         }
 
         .blog-content {
-            color: #34495e;
+            color: var(--text-color);
             margin-bottom: 1rem;
         }
 
         .read-more {
-            color: #3498db;
+            color: var(--accent-color);
             text-decoration: none;
             font-weight: 500;
         }
@@ -101,18 +152,37 @@
                 margin-right: 0;
             }
         }
+
+        /* Add new animation keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
     </style>
 </head>
 <body>
     <nav>
-        <a href="index.html">home</a>
-        <a href="project.html">projects</a>
-        <a href="contact.html">contact</a>
-        <a href="blog.html">blog</a>
+        <button class="theme-toggle" onclick="toggleTheme()" id="theme-toggle">&#x263C;</button>
+        <a href="index.html">Home</a>
+        <a href="project.html">Projects</a>
+        <a href="contact.html">Contact</a>
+        <a href="blog.html">Blog</a>
     </nav>
 
     <section id="blog">
-        <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 0.5rem; margin-bottom: 2rem;">
+        <h2 style="color: var(--heading-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; margin-bottom: 2rem;">
             Technical Blog
         </h2>
 
@@ -152,5 +222,86 @@
     <div class="citation">
         https://chat.deepseek.com/ is made this.
     </div>
+
+    <script>
+        function toggleTheme() {
+            const root = document.documentElement;
+            const themeButton = document.getElementById('theme-toggle');
+            const sections = document.querySelectorAll('section');
+            const nav = document.querySelector('nav');
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            if (currentTheme === 'dark') {
+                // Switch to light mode
+                root.style.setProperty('--bg-color', '#f0f2f5');
+                root.style.setProperty('--text-color', '#333');
+                root.style.setProperty('--nav-bg', '#fff');
+                root.style.setProperty('--section-bg', '#fff');
+                root.style.setProperty('--accent-color', '#3498db');
+                root.style.setProperty('--heading-color', '#2c3e50');
+                root.style.setProperty('--skill-bg', '#f0f2f5');
+                root.style.setProperty('--ai-pair-bg', '#f8f9fa');
+                localStorage.setItem('theme', 'light');
+                themeButton.textContent = '☀️'; // Sun emoji
+                themeButton.style.border = 'none';
+                nav.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+                sections.forEach(section => {
+                    section.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+                });
+            } else {
+                // Switch to dark mode
+                root.style.setProperty('--bg-color', '#1a1a1a');
+                root.style.setProperty('--text-color', '#e0e0e0');
+                root.style.setProperty('--nav-bg', '#2d2d2d');
+                root.style.setProperty('--section-bg', '#2d2d2d');
+                root.style.setProperty('--heading-color', '#7ab8f6');
+                root.style.setProperty('--skill-bg', '#3d3d3d');
+                root.style.setProperty('--ai-pair-bg', '#3d3d3d');
+                localStorage.setItem('theme', 'dark');
+                themeButton.textContent = '🌕'; // Moon emoji
+                themeButton.style.border = 'none';
+                nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
+                sections.forEach(section => {
+                    section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
+                });
+            }
+        }
+
+        // Check for saved theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const theme = localStorage.getItem('theme') || 'light';
+            const themeButton = document.getElementById('theme-toggle');
+            const sections = document.querySelectorAll('section');
+            const nav = document.querySelector('nav');
+            if (theme === 'dark') {
+                document.documentElement.style.setProperty('--bg-color', '#1a1a1a');
+                document.documentElement.style.setProperty('--text-color', '#e0e0e0');
+                document.documentElement.style.setProperty('--nav-bg', '#2d2d2d');
+                document.documentElement.style.setProperty('--section-bg', '#2d2d2d');
+                document.documentElement.style.setProperty('--heading-color', '#7ab8f6');
+                document.documentElement.style.setProperty('--skill-bg', '#3d3d3d');
+                document.documentElement.style.setProperty('--ai-pair-bg', '#3d3d3d');
+                themeButton.textContent = '🌕'; // Moon emoji
+                themeButton.style.border = 'none';
+                nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
+                sections.forEach(section => {
+                    section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
+                });
+            } else {
+                // Apply light mode settings explicitly
+                document.documentElement.style.setProperty('--bg-color', '#f0f2f5');
+                document.documentElement.style.setProperty('--text-color', '#333');
+                document.documentElement.style.setProperty('--nav-bg', '#fff');
+                document.documentElement.style.setProperty('--section-bg', '#fff');
+                document.documentElement.style.setProperty('--heading-color', '#2c3e50');
+                // ...existing light theme variables...
+                themeButton.textContent = '☀️'; // Sun emoji
+                themeButton.style.border = 'none';
+                nav.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+                sections.forEach(section => {
+                    section.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+                });
+            }
+        });
+    </script>
 </body>
 </html>
