@@ -4,182 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ruhaan's Portfolio - Projects</title>
-  <style>
-    /* Global styles */
-    :root {
-            --bg-color: #f9f9f9;
-            --text-color: #444;
-            --nav-bg: #fff;
-            --section-bg: #fff;
-            --accent-color: #2196f3; /* Primary Blue */
-            --heading-color: #1976d2;
-            --skill-bg: #e3f2fd;
-            --ai-pair-bg: #f5f5f5;
-            --gradient-1: linear-gradient(135deg, #2196f3, #64b5f6);
-            --gradient-2: linear-gradient(135deg, #1976d2, #42a5f5);
-        }
-    
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #0a0a0a;
-                --text-color: #eee;
-                --nav-bg: #1a1a1a;
-                --section-bg: #1a1a1a;
-                --heading-color: #64b5f6;
-                --skill-bg: #1a237e;
-                --ai-pair-bg: #252525;
-                --gradient-1: linear-gradient(135deg, #1976d2, #42a5f5);
-                --gradient-2: linear-gradient(135deg, #2196f3, #64b5f6);
-            }
-        }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Roboto', sans-serif; /* Modern Font */
-      transition: all 0.3s ease;
-    }
-    body {
-      background: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.7; /* Improved Line Height */
-      padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    nav {
-      background: var(--nav-bg);
-      padding: 1rem;
-      border-radius: 4px;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Softer Shadow */
-      display: flex;
-      align-items: center;
-      position: relative;
-    }
-    nav a {
-      margin-right: 1.5rem;
-      text-decoration: none;
-      color: var(--heading-color);
-      font-weight: 500;
-      transition: color 0.3s ease;
-      position: relative;
-      padding-bottom: 5px;
-    }
-
-    nav a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background: var(--gradient-1);
-            transition: width 0.3s ease;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-    nav a:hover {
-      color: var(--accent-color);
-    }
-
-    .theme-toggle {
-            background: var(--gradient-1);
-            color: white;
-            border: none;
-            padding: 0.6rem;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s;
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            font-size: 1.2rem;
-            width: 2.5rem;
-            height: 2.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .theme-toggle:hover {
-            background: var(--gradient-2);
-            transform: scale(1.1) rotate(180deg);
-        }
-
-    section {
-      background: var(--section-bg);
-      padding: 2rem;
-      margin-bottom: 2rem;
-      border-radius: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Softer Shadow */
-    }
-    h2 {
-      color: var(--heading-color);
-      margin-bottom: 1.5rem;
-      border-bottom: 3px solid var(--accent-color); /* Thicker Border */
-      padding-bottom: 0.5rem;
-      font-size: 2rem; /* Larger Font Size */
-      font-weight: 600;
-    }
-    /* Project card styles */
-    .project-card {
-      display: block;
-      margin-bottom: 2rem;
-      padding: 1.5rem;
-      border-left: 4px solid var(--accent-color);
-      background: var(--section-bg);
-      border-radius: 4px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      text-decoration: none;
-      color: var(--text-color);
-      cursor: pointer;
-      animation: fadeInUp 0.6s ease-out;
-    }
-    .project-card:hover {
-      transform: translateX(5px);
-      background: var(--skill-bg);
-      box-shadow: 0 5px 15px rgba(33, 150, 243, 0.1);
-      border-left-color: var(--accent-color);
-    }
-    .project-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 0.5rem;
-    }
-    .project-title {
-      color: var(--heading-color);
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-    .project-description {
-      color: var(--text-color);
-      line-height: 1.5;
-    }
-
-    @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav>
@@ -196,86 +21,100 @@
   </section>
 
   <script>
+    // Added/updated createOverlay and toggleTheme functions
+    function createOverlay() {
+        const overlay = document.createElement('div');
+        overlay.id = 'theme-transition-overlay';
+        document.body.appendChild(overlay);
+        setTimeout(() => overlay.remove(), 500);
+    }
+    
     function toggleTheme() {
-            const root = document.documentElement;
-            const currentTheme = localStorage.getItem('theme') || 'light';
-            const themeButton = document.getElementById('theme-toggle');
-            const sections = document.querySelectorAll('section');
-            const nav = document.querySelector('nav');
-
-            if (currentTheme === 'dark') {
-                root.style.setProperty('--bg-color', '#f0f2f5');
-                root.style.setProperty('--text-color', '#333');
-                root.style.setProperty('--nav-bg', '#fff');
-                root.style.setProperty('--section-bg', '#fff');
-                root.style.setProperty('--accent-color', '#2196f3');
-                root.style.setProperty('--heading-color', '#1976d2');
-                root.style.setProperty('--skill-bg', '#e3f2fd');
-                root.style.setProperty('--ai-pair-bg', '#f8f9fa');
-                localStorage.setItem('theme', 'light');
-                themeButton.textContent = '☀️'; // Sun emoji
-                themeButton.style.border = 'none';
-                nav.style.boxShadow = '0 4px 6px rgba(0,0,0,0.05)';
-                sections.forEach(section => {
-                    section.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
-                });
-            } else {
-                root.style.setProperty('--bg-color', '#1a1a1a');
-                root.style.setProperty('--text-color', '#e0e0e0');
-                root.style.setProperty('--nav-bg', '#2d2d2d');
-                root.style.setProperty('--section-bg', '#2d2d2d');
-                root.style.setProperty('--heading-color', '#64b5f6');
-                root.style.setProperty('--skill-bg', '#1a237e');
-                root.style.setProperty('--ai-pair-bg', '#3d3d3d');
-                root.style.setProperty('--accent-color', '#64b5f6');
-                localStorage.setItem('theme', 'dark');
-                themeButton.textContent = '🌕'; // Moon emoji
-                themeButton.style.border = 'none';
-                nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-                sections.forEach(section => {
-                    section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-                });
-            }
+        createOverlay();
+        const root = document.documentElement;
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        const themeButton = document.getElementById('theme-toggle');
+        const sections = document.querySelectorAll('section');
+        const nav = document.querySelector('nav');
+        if (currentTheme === 'dark') {
+            root.style.setProperty('--bg-color', '#f0f2f5');
+            root.style.setProperty('--text-color', '#333');
+            root.style.setProperty('--nav-bg', '#fff');
+            root.style.setProperty('--section-bg', '#fff');
+            root.style.setProperty('--accent-color', '#2196f3');
+            root.style.setProperty('--heading-color', '#1976d2');
+            root.style.setProperty('--skill-bg', '#e3f2fd');
+            root.style.setProperty('--ai-pair-bg', '#f8f9fa');
+            root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, white, #add8e6)');
+            localStorage.setItem('theme', 'light');
+            themeButton.textContent = '☀️';
+            themeButton.style.border = 'none';
+            nav.style.boxShadow = '0 4px 6px rgba(0,0,0,0.05)';
+            sections.forEach(section => { section.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)'; });
+            document.body.style.animation = 'none';
+            document.body.style.backgroundSize = 'cover'; // Changed from 'auto' to 'cover'
+        } else {
+            root.style.setProperty('--bg-color', '#1a1a1a');
+            root.style.setProperty('--text-color', '#e0e0e0');
+            root.style.setProperty('--nav-bg', '#2d2d2d');
+            root.style.setProperty('--section-bg', '#2d2d2d');
+            root.style.setProperty('--heading-color', '#64b5f6');
+            root.style.setProperty('--skill-bg', '#1a237e');
+            root.style.setProperty('--ai-pair-bg', '#3d3d3d');
+            root.style.setProperty('--accent-color', '#64b5f6');
+            root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, #232526, #414345)');
+            localStorage.setItem('theme', 'dark');
+            themeButton.textContent = '🌕';
+            themeButton.style.border = 'none';
+            nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
+            sections.forEach(section => { section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)'; });
+            document.body.style.backgroundSize = '400% 400%';
+            document.body.style.animation = 'gradientAnimation 10s ease infinite';
         }
+    }
 
-        // Check for saved theme on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const theme = localStorage.getItem('theme') || 'light';
-            const themeButton = document.getElementById('theme-toggle');
-            const sections = document.querySelectorAll('section');
-            const nav = document.querySelector('nav');
-
-            if (theme === 'dark') {
-                document.documentElement.style.setProperty('--bg-color', '#1a1a1a');
-                document.documentElement.style.setProperty('--text-color', '#e0e0e0');
-                document.documentElement.style.setProperty('--nav-bg', '#2d2d2d');
-                document.documentElement.style.setProperty('--section-bg', '#2d2d2d');
-                document.documentElement.style.setProperty('--heading-color', '#64b5f6');
-                document.documentElement.style.setProperty('--skill-bg', '#1a237e');
-                document.documentElement.style.setProperty('--ai-pair-bg', '#3d3d3d');
-                document.documentElement.style.setProperty('--accent-color', '#64b5f6');
-                themeButton.textContent = '🌕'; // Moon emoji
-                themeButton.style.border = 'none';
-                nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-                sections.forEach(section => {
-                    section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-                });
-            } else {
-                document.documentElement.style.setProperty('--bg-color', '#f0f2f5');
-                document.documentElement.style.setProperty('--text-color', '#333');
-                document.documentElement.style.setProperty('--nav-bg', '#fff');
-                document.documentElement.style.setProperty('--section-bg', '#fff');
-                document.documentElement.style.setProperty('--heading-color', '#1976d2');
-                document.documentElement.style.setProperty('--skill-bg', '#e3f2fd');
-                document.documentElement.style.setProperty('--ai-pair-bg', '#f8f9fa');
-                themeButton.textContent = '☀️'; // Sun emoji
-                themeButton.style.border = 'none';
-                nav.style.boxShadow = '0 4px 6px rgba(0,0,0,0.05)';
-                sections.forEach(section => {
-                    section.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
-                });
-            }
-        });
+    // Updated DOMContentLoaded handler
+    document.addEventListener('DOMContentLoaded', function() {
+        const theme = localStorage.getItem('theme') || 'light';
+        const themeButton = document.getElementById('theme-toggle');
+        const sections = document.querySelectorAll('section');
+        const nav = document.querySelector('nav');
+        const root = document.documentElement;
+        if (theme === 'dark') {
+            root.style.setProperty('--bg-color', '#1a1a1a');
+            root.style.setProperty('--text-color', '#e0e0e0');
+            root.style.setProperty('--nav-bg', '#2d2d2d');
+            root.style.setProperty('--section-bg', '#2d2d2d');
+            root.style.setProperty('--heading-color', '#64b5f6');
+            root.style.setProperty('--skill-bg', '#1a237e');
+            root.style.setProperty('--ai-pair-bg', '#3d3d3d');
+            root.style.setProperty('--accent-color', '#64b5f6');
+            root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, #232526, #414345)');
+            nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
+            sections.forEach(section => {
+                section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
+            });
+            themeButton.textContent = '🌕';
+            document.body.style.backgroundSize = '400% 400%';
+            document.body.style.animation = 'gradientAnimation 10s ease infinite';
+        } else {
+            root.style.setProperty('--bg-color', '#f0f2f5');
+            root.style.setProperty('--text-color', '#333');
+            root.style.setProperty('--nav-bg', '#fff');
+            root.style.setProperty('--section-bg', '#fff');
+            root.style.setProperty('--heading-color', '#1976d2');
+            root.style.setProperty('--skill-bg', '#e3f2fd');
+            root.style.setProperty('--ai-pair-bg', '#f8f9fa');
+            root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, white, #add8e6)');
+            nav.style.boxShadow = '0 4px 6px rgba(0,0,0,0.05)';
+            sections.forEach(section => {
+                section.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+            });
+            themeButton.textContent = '☀️';
+            document.body.style.animation = 'none';
+            document.body.style.backgroundSize = 'cover'; // Changed from 'auto' to 'cover'
+        }
+    });
     // Execute once the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function () {
       async function loadRepos() {

@@ -4,173 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruhaan's Portfolio - blog</title>
-    <style>
-        :root {
-            --bg-color: #f0f2f5;
-            --text-color: #333;
-            --nav-bg: #fff;
-            --section-bg: #fff;
-            --accent-color: #3498db;
-            --heading-color: #2c3e50;
-            --skill-bg: #f0f2f5;
-            --ai-pair-bg: #f8f9fa;
-        }
-    
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #1a1a1a;
-                --text-color: #e0e0e0;
-                --nav-bg: #2d2d2d;
-                --section-bg: #2d2d2d;
-                --heading-color: #7ab8f6;
-                --skill-bg: #3d3d3d;
-                --ai-pair-bg: #3d3d3d;
-                --accent-color: #7ab8f6;
-            }
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-
-        body {
-            background: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        nav {
-            background: var(--nav-bg);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-        nav a {
-            margin-right: 1.5rem;
-            text-decoration: none;
-            color: var(--heading-color);
-            font-weight: 500;
-        }
-
-        .theme-toggle {
-            background-color: var(--accent-color);
-            color: white;
-            border: 2px solid #333;
-            padding: 0.5rem;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            font-size: 1.2rem;
-            width: 2.5rem;
-            height: 2.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: float 3s ease-in-out infinite;  
-        }
-
-        .theme-toggle:hover {
-            background-color: darken(var(--accent-color), 10%);
-        }
-
-        .blog-card {
-            background: var(--section-bg);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--accent-color);
-            border-radius: 4px;
-            transition: transform 0.2s;
-        }
-
-        .blog-card:hover {
-            transform: translateX(5px);
-        }
-
-        .blog-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 1rem;
-        }
-
-        .blog-title {
-            color: var(--heading-color);
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .blog-date {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-        }
-
-        .blog-content {
-            color: var(--text-color);
-            margin-bottom: 1rem;
-        }
-
-        .read-more {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .citation {
-            text-align: center;
-            margin-top: 3rem;
-            color: #95a5a6;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            .blog-header {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            nav {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            nav a {
-                margin-right: 0;
-            }
-        }
-
-        /* Add new animation keyframes */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav>
@@ -224,7 +58,16 @@
     </div>
 
     <script>
+        // Added/updated createOverlay and toggleTheme functions
+        function createOverlay() {
+            const overlay = document.createElement('div');
+            overlay.id = 'theme-transition-overlay';
+            document.body.appendChild(overlay);
+            setTimeout(() => overlay.remove(), 500);
+        }
+        
         function toggleTheme() {
+            createOverlay();
             const root = document.documentElement;
             const themeButton = document.getElementById('theme-toggle');
             const sections = document.querySelectorAll('section');
@@ -240,66 +83,77 @@
                 root.style.setProperty('--heading-color', '#2c3e50');
                 root.style.setProperty('--skill-bg', '#f0f2f5');
                 root.style.setProperty('--ai-pair-bg', '#f8f9fa');
+                root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, white, #add8e6)');
                 localStorage.setItem('theme', 'light');
-                themeButton.textContent = '☀️'; // Sun emoji
+                themeButton.textContent = '☀️';
                 themeButton.style.border = 'none';
                 nav.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-                sections.forEach(section => {
-                    section.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-                });
+                sections.forEach(section => { section.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)'; });
+                document.body.style.animation = 'none';
+                document.body.style.backgroundSize = 'cover'; // Changed from 'auto' to 'cover'
             } else {
                 // Switch to dark mode
                 root.style.setProperty('--bg-color', '#1a1a1a');
                 root.style.setProperty('--text-color', '#e0e0e0');
                 root.style.setProperty('--nav-bg', '#2d2d2d');
                 root.style.setProperty('--section-bg', '#2d2d2d');
+                root.style.setProperty('--accent-color', '#64b5f6');
                 root.style.setProperty('--heading-color', '#7ab8f6');
                 root.style.setProperty('--skill-bg', '#3d3d3d');
                 root.style.setProperty('--ai-pair-bg', '#3d3d3d');
+                root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, #232526, #414345)');
                 localStorage.setItem('theme', 'dark');
-                themeButton.textContent = '🌕'; // Moon emoji
+                themeButton.textContent = '🌕';
                 themeButton.style.border = 'none';
                 nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-                sections.forEach(section => {
-                    section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-                });
+                sections.forEach(section => { section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)'; });
+                document.body.style.backgroundSize = '400% 400%';
+                document.body.style.animation = 'gradientAnimation 10s ease infinite';
             }
         }
 
-        // Check for saved theme on page load
+        // Updated DOMContentLoaded handler
         document.addEventListener('DOMContentLoaded', function() {
             const theme = localStorage.getItem('theme') || 'light';
             const themeButton = document.getElementById('theme-toggle');
             const sections = document.querySelectorAll('section');
             const nav = document.querySelector('nav');
+            const root = document.documentElement;
             if (theme === 'dark') {
-                document.documentElement.style.setProperty('--bg-color', '#1a1a1a');
-                document.documentElement.style.setProperty('--text-color', '#e0e0e0');
-                document.documentElement.style.setProperty('--nav-bg', '#2d2d2d');
-                document.documentElement.style.setProperty('--section-bg', '#2d2d2d');
-                document.documentElement.style.setProperty('--heading-color', '#7ab8f6');
-                document.documentElement.style.setProperty('--skill-bg', '#3d3d3d');
-                document.documentElement.style.setProperty('--ai-pair-bg', '#3d3d3d');
-                themeButton.textContent = '🌕'; // Moon emoji
-                themeButton.style.border = 'none';
+                createOverlay();
+                root.style.setProperty('--bg-color', '#1a1a1a');
+                root.style.setProperty('--text-color', '#e0e0e0');
+                root.style.setProperty('--nav-bg', '#2d2d2d');
+                root.style.setProperty('--section-bg', '#2d2d2d');
+                root.style.setProperty('--accent-color', '#64b5f6');
+                root.style.setProperty('--heading-color', '#7ab8f6');
+                root.style.setProperty('--skill-bg', '#3d3d3d');
+                root.style.setProperty('--ai-pair-bg', '#3d3d3d');
+                root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, #232526, #414345)');
                 nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
                 sections.forEach(section => {
                     section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
                 });
+                themeButton.textContent = '🌕';
+                document.body.style.backgroundSize = '400% 400%';
+                document.body.style.animation = 'gradientAnimation 10s ease infinite';
             } else {
-                // Apply light mode settings explicitly
-                document.documentElement.style.setProperty('--bg-color', '#f0f2f5');
-                document.documentElement.style.setProperty('--text-color', '#333');
-                document.documentElement.style.setProperty('--nav-bg', '#fff');
-                document.documentElement.style.setProperty('--section-bg', '#fff');
-                document.documentElement.style.setProperty('--heading-color', '#2c3e50');
-                // ...existing light theme variables...
-                themeButton.textContent = '☀️'; // Sun emoji
-                themeButton.style.border = 'none';
+                root.style.setProperty('--bg-color', '#f0f2f5');
+                root.style.setProperty('--text-color', '#333');
+                root.style.setProperty('--nav-bg', '#fff');
+                root.style.setProperty('--section-bg', '#fff');
+                root.style.setProperty('--accent-color', '#3498db');
+                root.style.setProperty('--heading-color', '#2c3e50');
+                root.style.setProperty('--skill-bg', '#f0f2f5');
+                root.style.setProperty('--ai-pair-bg', '#f8f9fa');
+                root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, white, #add8e6)');
                 nav.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
                 sections.forEach(section => {
                     section.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
                 });
+                themeButton.textContent = '☀️';
+                document.body.style.animation = 'none';
+                document.body.style.backgroundSize = 'cover'; // Changed from 'auto' to 'cover'
             }
         });
     </script>
