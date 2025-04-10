@@ -4,28 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ruhaan's Portfolio - Projects</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='16'%3E📁%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
   <!-- Use Firebase compat libraries -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <script>
-    // Wrap Firebase initialization in try/catch for debugging
-    try {
-      const firebaseConfig = {
-        apiKey: "AIzaSyD-HoQoBIVjxEyoAw1cncImOOYQkVJsRHA",
-        authDomain: "myportfolio-3982d.firebaseapp.com",
-        projectId: "myportfolio-3982d",
-        storageBucket: "myportfolio-3982d.firebasestorage.app",
-        messagingSenderId: "466852161255",
-        appId: "1:466852161255:web:eda037922c646fd513a442",
-        measurementId: "G-E4T3S30FFY"
-      };
-      firebase.initializeApp(firebaseConfig);
-    } catch (error) {
-      console.error("Firebase init error:", error);
-    }
-    const db = firebase.firestore();
-  </script>
 </head>
 <body>
   <nav>
@@ -38,6 +21,8 @@
 
   <section id="projects">
     <h2>My Projects</h2>
+    <p id="loading-message" class="loading-message">Loading projects, please wait...</p>
+    <div id="loading-bar" class="loading-bar"></div>
     <!-- Dynamic project cards will be injected here -->
   </section>
 
@@ -46,223 +31,6 @@
     background: var(--accent-color); color: white; border: none; border-radius: 5px; 
     cursor: pointer; display: none;">Toggle Admin Mode</button>
 
-  <script>
-    // Added/updated createOverlay and toggleTheme functions
-    function createOverlay() {
-        const overlay = document.createElement('div');
-        overlay.id = 'theme-transition-overlay';
-        document.body.appendChild(overlay);
-        setTimeout(() => overlay.remove(), 500);
-    }
-    
-    function toggleTheme() {
-        createOverlay();
-        const root = document.documentElement;
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        const themeButton = document.getElementById('theme-toggle');
-        const sections = document.querySelectorAll('section');
-        const nav = document.querySelector('nav');
-        if (currentTheme === 'dark') {
-            root.style.setProperty('--bg-color', '#f0f2f5');
-            root.style.setProperty('--text-color', '#333');
-            root.style.setProperty('--nav-bg', '#fff');
-            root.style.setProperty('--section-bg', '#fff');
-            root.style.setProperty('--accent-color', '#2196f3');
-            root.style.setProperty('--heading-color', '#1976d2');
-            root.style.setProperty('--skill-bg', '#e3f2fd');
-            root.style.setProperty('--ai-pair-bg', '#f8f9fa');
-            root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, white, #add8e6)');
-            localStorage.setItem('theme', 'light');
-            themeButton.textContent = '☀️';
-            themeButton.style.border = 'none';
-            nav.style.boxShadow = '0 4px 6px rgba(0,0,0,0.05)';
-            sections.forEach(section => { section.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)'; });
-            document.body.style.animation = 'none';
-            document.body.style.backgroundSize = 'cover'; // Changed from 'auto' to 'cover'
-        } else {
-            root.style.setProperty('--bg-color', '#1a1a1a');
-            root.style.setProperty('--text-color', '#e0e0e0');
-            root.style.setProperty('--nav-bg', '#2d2d2d');
-            root.style.setProperty('--section-bg', '#2d2d2d');
-            root.style.setProperty('--heading-color', '#64b5f6');
-            root.style.setProperty('--skill-bg', '#1a237e');
-            root.style.setProperty('--ai-pair-bg', '#3d3d3d');
-            root.style.setProperty('--accent-color', '#64b5f6');
-            root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, #232526, #414345)');
-            localStorage.setItem('theme', 'dark');
-            themeButton.textContent = '🌕';
-            themeButton.style.border = 'none';
-            nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-            sections.forEach(section => { section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)'; });
-            document.body.style.backgroundSize = '400% 400%';
-            document.body.style.animation = 'gradientAnimation 10s ease infinite';
-        }
-    }
-
-    // Updated DOMContentLoaded handler
-    document.addEventListener('DOMContentLoaded', function() {
-        const theme = localStorage.getItem('theme') || 'light';
-        const themeButton = document.getElementById('theme-toggle');
-        const sections = document.querySelectorAll('section');
-        const nav = document.querySelector('nav');
-        const root = document.documentElement;
-        if (theme === 'dark') {
-            root.style.setProperty('--bg-color', '#1a1a1a');
-            root.style.setProperty('--text-color', '#e0e0e0');
-            root.style.setProperty('--nav-bg', '#2d2d2d');
-            root.style.setProperty('--section-bg', '#2d2d2d');
-            root.style.setProperty('--heading-color', '#64b5f6');
-            root.style.setProperty('--skill-bg', '#1a237e');
-            root.style.setProperty('--ai-pair-bg', '#3d3d3d');
-            root.style.setProperty('--accent-color', '#64b5f6');
-            root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, #232526, #414345)');
-            nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-            sections.forEach(section => {
-                section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-            });
-            themeButton.textContent = '🌕';
-            document.body.style.backgroundSize = '400% 400%';
-            document.body.style.animation = 'gradientAnimation 10s ease infinite';
-        } else {
-            root.style.setProperty('--bg-color', '#f0f2f5');
-            root.style.setProperty('--text-color', '#333');
-            root.style.setProperty('--nav-bg', '#fff');
-            root.style.setProperty('--section-bg', '#fff');
-            root.style.setProperty('--heading-color', '#1976d2');
-            root.style.setProperty('--skill-bg', '#e3f2fd');
-            root.style.setProperty('--ai-pair-bg', '#f8f9fa');
-            root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, white, #add8e6)');
-            nav.style.boxShadow = '0 4px 6px rgba(0,0,0,0.05)';
-            sections.forEach(section => {
-                section.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
-            });
-            themeButton.textContent = '☀️';
-            document.body.style.animation = 'none';
-            document.body.style.backgroundSize = 'cover'; // Changed from 'auto' to 'cover'
-        }
-    });
-    // Execute once the DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', function () {
-      const adminButton = document.getElementById('adminControl');
-      
-      // Updated functions to interact with Firebase Firestore
-      async function fetchSelectedProjects() {
-        try {
-          const docRef = db.collection("selectedProjects").doc("projects");
-          const docSnap = await docRef.get();
-          if (docSnap.exists) {
-            return docSnap.data().selectedProjects || [];
-          }
-          return [];
-        } catch (error) {
-          console.error("Error fetching projects from Firestore:", error);
-          return [];
-        }
-      }
-      
-      async function updateCloudSelectedProjects(selectedProjects) {
-        try {
-          await db.collection("selectedProjects").doc("projects").set({ selectedProjects });
-        } catch (error) {
-          console.error("Error updating projects on Firestore:", error);
-        }
-      }
-      
-      // Show admin button on special key combination
-      document.addEventListener('keydown', function(e) {
-        const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
-        
-        // For Mac: Command (meta) + Option (alt) + `
-        // For Windows: Ctrl + Alt + `
-        const isAdminKeyCombo = isMac
-          ? (e.metaKey && e.altKey && (e.key === '`' || e.key === '~' || e.keyCode === 192))
-          : (e.ctrlKey && e.altKey && (e.key === '`' || e.key === '~' || e.keyCode === 192));
-
-        if (isAdminKeyCombo) {
-          e.preventDefault(); // Prevent default browser behavior
-          adminButton.style.display = adminButton.style.display === 'none' ? 'block' : 'none';
-          console.log('Admin mode toggled'); // Debug message
-        }
-      });
-
-      // Toggle admin mode
-      let isAdminMode = false;
-      adminButton.addEventListener('click', function() {
-        isAdminMode = !isAdminMode;
-        adminButton.textContent = isAdminMode ? 'Exit Admin Mode' : 'Toggle Admin Mode';
-        loadRepos();
-      });
-
-      async function loadRepos() {
-        try {
-          const response = await fetch('https://api.github.com/users/Ruhaan838/repos');
-          if (!response.ok) throw new Error('Network response was not ok');
-          const repos = await response.json();
-          
-          repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-          
-          const projectsSection = document.getElementById('projects');
-          projectsSection.innerHTML = '<h2>My Projects</h2>'; // Clear existing projects
-          
-          // Retrieve selected projects from cloud
-          const selectedProjects = await fetchSelectedProjects();
-          
-          repos.forEach(repo => {
-            const projectLink = document.createElement('a');
-            projectLink.href = repo.html_url;
-            projectLink.target = '_blank';
-            projectLink.className = 'project-card';
-            
-            if (isAdminMode) {
-              projectLink.style.position = 'relative';
-              const isSelected = selectedProjects.includes(repo.name);
-              projectLink.style.opacity = isSelected ? '1' : '0.5';
-              if (isSelected) {
-                projectLink.style.border = '2px solid var(--accent-color)';
-              }
-              // Toggle selection on click and update cloud storage
-              projectLink.addEventListener('click', async function(e) {
-                e.preventDefault();
-                const index = selectedProjects.indexOf(repo.name);
-                if (index === -1) {
-                  selectedProjects.push(repo.name);
-                  projectLink.style.opacity = '1';
-                  projectLink.style.border = '2px solid var(--accent-color)';
-                } else {
-                  selectedProjects.splice(index, 1);
-                  projectLink.style.opacity = '0.5';
-                  projectLink.style.border = 'none';
-                }
-                await updateCloudSelectedProjects(selectedProjects);
-              });
-            } else {
-              // Normal mode: Show only projects stored on cloud
-              if (!selectedProjects.includes(repo.name)) return;
-              projectLink.style.border = '2px solid var(--accent-color)';
-            }
-
-            const headerDiv = document.createElement('div');
-            headerDiv.className = 'project-header';
-
-            const titleSpan = document.createElement('span');
-            titleSpan.className = 'project-title';
-            titleSpan.textContent = repo.name;
-            headerDiv.appendChild(titleSpan);
-            projectLink.appendChild(headerDiv);
-
-            const descriptionPara = document.createElement('p');
-            descriptionPara.className = 'project-description';
-            descriptionPara.textContent = repo.description || 'No description available.';
-            projectLink.appendChild(descriptionPara);
-
-            projectsSection.appendChild(projectLink);
-          });
-        } catch (error) {
-          console.error('Failed to fetch repositories:', error);
-        }
-      }
-      loadRepos();
-    });
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>

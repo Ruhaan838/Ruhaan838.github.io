@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruhaan's Portfolio</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='16'%3E®️%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -89,102 +90,6 @@
         </div>
     </section>
 
-    <script>
-        function createOverlay() {
-            const overlay = document.createElement('div');
-            overlay.id = 'theme-transition-overlay';
-            document.body.appendChild(overlay);
-            setTimeout(() => overlay.remove(), 500);
-        }
-        
-        function toggleTheme() {
-            createOverlay(); // Add animated overlay
-            const root = document.documentElement;
-            const themeButton = document.getElementById('theme-toggle');
-            const sections = document.querySelectorAll('section');
-            const nav = document.querySelector('nav');
-            const currentTheme = localStorage.getItem('theme') || 'light';
-            if (currentTheme === 'dark') {
-                // Switch to light mode
-                root.style.setProperty('--bg-color', '#f0f2f5');
-                root.style.setProperty('--text-color', '#333');
-                root.style.setProperty('--nav-bg', '#fff');
-                root.style.setProperty('--section-bg', '#fff');
-                root.style.setProperty('--heading-color', '#1976d2');
-                root.style.setProperty('--skill-bg', '#e3f2fd');
-                root.style.setProperty('--ai-pair-bg', '#f8f9fa');
-                root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, white, #add8e6)');
-                localStorage.setItem('theme', 'light');
-                themeButton.textContent = '☀️';
-                themeButton.style.border = 'none';
-                nav.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-                sections.forEach(section => { section.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)'; });
-                document.body.style.animation = 'none';
-                document.body.style.backgroundSize = 'cover'; // Changed from 'auto' to 'cover'
-            } else {
-                // Switch to dark mode
-                root.style.setProperty('--bg-color', '#1a1a1a');
-                root.style.setProperty('--text-color', '#e0e0e0');
-                root.style.setProperty('--nav-bg', '#2d2d2d');
-                root.style.setProperty('--section-bg', '#2d2d2d');
-                root.style.setProperty('--heading-color', '#64b5f6');
-                root.style.setProperty('--skill-bg', '#1a237e');
-                root.style.setProperty('--ai-pair-bg', '#3d3d3d');
-                root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, #232526, #414345)');
-                localStorage.setItem('theme', 'dark');
-                themeButton.textContent = '🌕';
-                themeButton.style.border = 'none';
-                nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-                sections.forEach(section => { section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)'; });
-                document.body.style.backgroundSize = '400% 400%';
-                document.body.style.animation = 'gradientAnimation 10s ease infinite';
-            }
-        }
-
-        // Check the saved theme on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentTheme = localStorage.getItem('theme') || 'light';
-            const root = document.documentElement;
-            const sections = document.querySelectorAll('section');
-            const nav = document.querySelector('nav');
-            const themeButton = document.getElementById('theme-toggle');
-            if (currentTheme === 'dark') {
-                createOverlay(); // Add animated overlay on DOMContentLoaded for dark theme
-                root.style.setProperty('--bg-color', '#1a1a1a');
-                root.style.setProperty('--text-color', '#e0e0e0');
-                root.style.setProperty('--nav-bg', '#2d2d2d');
-                root.style.setProperty('--section-bg', '#2d2d2d');
-                root.style.setProperty('--heading-color', '#64b5f6');
-                root.style.setProperty('--skill-bg', '#1a237e');
-                root.style.setProperty('--ai-pair-bg', '#3d3d3d');
-                root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, #232526, #414345)');  // Set dark gradient
-                nav.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-                sections.forEach(section => {
-                    section.style.boxShadow = '0 2px 7px rgba(200,200,200,0.1)';
-                });
-                themeButton.textContent = '🌕'; // Moon emoji
-                document.body.style.backgroundSize = '400% 400%';
-                document.body.style.animation = 'gradientAnimation 10s ease infinite';
-            } else {
-                // Ensure light mode settings are applied
-                root.style.setProperty('--bg-color', '#f0f2f5');
-                root.style.setProperty('--text-color', '#333');
-                root.style.setProperty('--nav-bg', '#fff');
-                root.style.setProperty('--section-bg', '#fff');
-                root.style.setProperty('--heading-color', '#1976d2');
-                root.style.setProperty('--skill-bg', '#e3f2fd');
-                root.style.setProperty('--ai-pair-bg', '#f8f9fa');
-                root.style.setProperty('--gradient-bg', 'linear-gradient(135deg, white, #add8e6)');  // Set light gradient
-                nav.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-                sections.forEach(section => {
-                    section.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-                });
-                themeButton.textContent = '☀️'; // Sun emoji
-                document.body.style.animation = 'none';
-                document.body.style.backgroundSize = 'cover'; // Changed from 'auto' to 'cover'
-            }
-        });
-        
-    </script>
+    <script src="main.js"></script>
 </body>
 </html>
