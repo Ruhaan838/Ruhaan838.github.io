@@ -5,6 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ruhaan's Portfolio - Projects</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Use Firebase compat libraries -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script>
+    // Wrap Firebase initialization in try/catch for debugging
+    try {
+      const firebaseConfig = {
+        apiKey: "AIzaSyD-HoQoBIVjxEyoAw1cncImOOYQkVJsRHA",
+        authDomain: "myportfolio-3982d.firebaseapp.com",
+        projectId: "myportfolio-3982d",
+        storageBucket: "myportfolio-3982d.firebasestorage.app",
+        messagingSenderId: "466852161255",
+        appId: "1:466852161255:web:eda037922c646fd513a442",
+        measurementId: "G-E4T3S30FFY"
+      };
+      firebase.initializeApp(firebaseConfig);
+    } catch (error) {
+      console.error("Firebase init error:", error);
+    }
+    const db = firebase.firestore();
+  </script>
 </head>
 <body>
   <nav>
@@ -19,6 +40,11 @@
     <h2>My Projects</h2>
     <!-- Dynamic project cards will be injected here -->
   </section>
+
+  <!-- Add this button at the bottom of body -->
+  <button id="adminControl" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; 
+    background: var(--accent-color); color: white; border: none; border-radius: 5px; 
+    cursor: pointer; display: none;">Toggle Admin Mode</button>
 
   <script>
     // Added/updated createOverlay and toggleTheme functions
@@ -117,27 +143,103 @@
     });
     // Execute once the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function () {
+      const adminButton = document.getElementById('adminControl');
+      
+      // Updated functions to interact with Firebase Firestore
+      async function fetchSelectedProjects() {
+        try {
+          const docRef = db.collection("selectedProjects").doc("projects");
+          const docSnap = await docRef.get();
+          if (docSnap.exists) {
+            return docSnap.data().selectedProjects || [];
+          }
+          return [];
+        } catch (error) {
+          console.error("Error fetching projects from Firestore:", error);
+          return [];
+        }
+      }
+      
+      async function updateCloudSelectedProjects(selectedProjects) {
+        try {
+          await db.collection("selectedProjects").doc("projects").set({ selectedProjects });
+        } catch (error) {
+          console.error("Error updating projects on Firestore:", error);
+        }
+      }
+      
+      // Show admin button on special key combination
+      document.addEventListener('keydown', function(e) {
+        const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+        
+        // For Mac: Command (meta) + Option (alt) + `
+        // For Windows: Ctrl + Alt + `
+        const isAdminKeyCombo = isMac
+          ? (e.metaKey && e.altKey && (e.key === '`' || e.key === '~' || e.keyCode === 192))
+          : (e.ctrlKey && e.altKey && (e.key === '`' || e.key === '~' || e.keyCode === 192));
+
+        if (isAdminKeyCombo) {
+          e.preventDefault(); // Prevent default browser behavior
+          adminButton.style.display = adminButton.style.display === 'none' ? 'block' : 'none';
+          console.log('Admin mode toggled'); // Debug message
+        }
+      });
+
+      // Toggle admin mode
+      let isAdminMode = false;
+      adminButton.addEventListener('click', function() {
+        isAdminMode = !isAdminMode;
+        adminButton.textContent = isAdminMode ? 'Exit Admin Mode' : 'Toggle Admin Mode';
+        loadRepos();
+      });
+
       async function loadRepos() {
         try {
-          // Fetch your GitHub repositories
           const response = await fetch('https://api.github.com/users/Ruhaan838/repos');
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
+          if (!response.ok) throw new Error('Network response was not ok');
           const repos = await response.json();
-
-          // Sort repos by last updated date (optional)
+          
           repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-
-          // Get the container where project cards will be inserted
+          
           const projectsSection = document.getElementById('projects');
-
-          // Create a project card for each repository
+          projectsSection.innerHTML = '<h2>My Projects</h2>'; // Clear existing projects
+          
+          // Retrieve selected projects from cloud
+          const selectedProjects = await fetchSelectedProjects();
+          
           repos.forEach(repo => {
             const projectLink = document.createElement('a');
             projectLink.href = repo.html_url;
             projectLink.target = '_blank';
             projectLink.className = 'project-card';
+            
+            if (isAdminMode) {
+              projectLink.style.position = 'relative';
+              const isSelected = selectedProjects.includes(repo.name);
+              projectLink.style.opacity = isSelected ? '1' : '0.5';
+              if (isSelected) {
+                projectLink.style.border = '2px solid var(--accent-color)';
+              }
+              // Toggle selection on click and update cloud storage
+              projectLink.addEventListener('click', async function(e) {
+                e.preventDefault();
+                const index = selectedProjects.indexOf(repo.name);
+                if (index === -1) {
+                  selectedProjects.push(repo.name);
+                  projectLink.style.opacity = '1';
+                  projectLink.style.border = '2px solid var(--accent-color)';
+                } else {
+                  selectedProjects.splice(index, 1);
+                  projectLink.style.opacity = '0.5';
+                  projectLink.style.border = 'none';
+                }
+                await updateCloudSelectedProjects(selectedProjects);
+              });
+            } else {
+              // Normal mode: Show only projects stored on cloud
+              if (!selectedProjects.includes(repo.name)) return;
+              projectLink.style.border = '2px solid var(--accent-color)';
+            }
 
             const headerDiv = document.createElement('div');
             headerDiv.className = 'project-header';
