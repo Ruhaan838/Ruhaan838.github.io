@@ -94,29 +94,80 @@ nav a:hover {
     color: var(--accent-color);
 }
 
-.theme-toggle {
-    background: var(--accent-color);
-    color: white;
-    border: none;
-    padding: 0.6rem;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s;
+/* Add new social icon styles after the nav styles and before the theme-toggle styles */
+.social-icons {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    font-size: 1.2rem;
-    width: 2.5rem;
-    height: 2.5rem;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    margin: 0;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: float 3s ease-in-out infinite;
 }
 
-.theme-toggle:hover {
-    background: var(--gradient-accent);
-    transform: scale(1.1) rotate(180deg);
+.social-icons a svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--text-color); /* This ensures icons are visible in both themes */
+    transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+/* After the social-icons styles */
+.social-icons a svg.x-icon {
+    fill: var(--text-color);
+    width: 20px; /* Slightly smaller to match visual weight */
+    height: 20px;
+}
+
+.social-icons a:hover svg {
+    transform: scale(1.2);
+    fill: var(--accent-color);
+}
+
+.social-icons a::after {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .social-icons {
+        position: static;
+        transform: none;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+}
+
+.theme-toggle {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--text-color);
+    transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+.theme-toggle:hover svg {
+    transform: scale(1.2);
+    fill: var(--accent-color);
 }
 
 section {
