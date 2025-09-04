@@ -1,11 +1,3 @@
-# Ruhaan Dalal
-Welcome to my personal portfolio!
+# Ruhaan838
 
-
-## Skills
-- Pytorch
-- Python
-- C/C++
-
-## Contact
-You can reach me at [LinkedIn](https://www.linkedin.com/username) or [GitHub](https://github.com/username).
+## Using template from https://github.com/once-ui-system/magic-portfolio
