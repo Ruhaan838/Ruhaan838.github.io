@@ -26,41 +26,19 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
+        uses: ./.github/actions/setup-node
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
+        with:
+          static-site-directory: next
+          node-version: '18'
           
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Remove API routes completely
+      - name: Build with next
         run: |
-          # API routes cause problems with static export
-          rm -rf src/app/api
-        
-      - name: Build with Next.js
-        env:
-          NEXT_PUBLIC_PAGE_ACCESS_PASSWORD: ${{ secrets.PAGE_ACCESS_PASSWORD }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run build
-      
-      - name: Create .nojekyll file
-        run: touch out/.nojekyll
-        
-      - name: List output directory
-        run: ls -la out/
-      
-      - name: Create fallback index if needed
-        run: |
-          if [ ! -f "out/index.html" ]; then
-            echo "Creating fallback index.html"
-            echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta http-equiv="refresh" content="0;url=/"><title>Redirecting...</title></head><body><p>If you are not redirected automatically, <a href="/">click here</a>.</p></body></html>' > out/index.html
-          fi
-      
+          npm install
+          npm run build
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
