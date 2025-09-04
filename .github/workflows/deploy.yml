@@ -30,44 +30,22 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
-        
-      - name: Prepare API routes for static build
-        run: |
-          # Create backup directory
-          mkdir -p src/disabled_api
-          # Move API routes to backup location if they exist
-          if [ -d "src/app/api" ]; then
-            cp -r src/app/api src/disabled_api/
-            rm -rf src/app/api
-          fi
       
-      - name: Build
+      - name: Build and prepare for GitHub Pages
         env:
           # IMPORTANT: Create a repository secret named PAGE_ACCESS_PASSWORD in GitHub
           # Go to your repository -> Settings -> Secrets and variables -> Actions -> New repository secret
           # Name it PAGE_ACCESS_PASSWORD and set it to your desired password for protected pages
           NEXT_PUBLIC_PAGE_ACCESS_PASSWORD: ${{ secrets.PAGE_ACCESS_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run build
-        
-      - name: Create API placeholder for static site
         run: |
-          # Create a placeholder for API routes in the output directory
-          mkdir -p out/api
-          echo '# API Routes Not Available' > out/api/index.html
-          echo 'API endpoints are not available in the static site build.' > out/api/index.html
-          
-          # Create .nojekyll file to prevent GitHub Pages from using Jekyll
-          touch out/.nojekyll
-          
+          # Run our custom script that handles everything
+          ./scripts/prepare-github-pages.sh
+        
+      - name: Add CNAME if using custom domain
+        run: |
           # Create a CNAME file if you're using a custom domain
           # echo "yourdomain.com" > out/CNAME
-          
-      - name: Restore API routes in source code
-        run: |
-          # Restore API routes to the source code for reference
-          if [ -d "src/disabled_api/api" ]; then
-            mkdir -p src/app/api
             cp -r src/disabled_api/api/* src/app/api/
             # Add README explaining the situation
             echo '# API Routes in Static Exports\n\nThese API routes are not used in the static export build.\n\nInstead, client-side authentication is used.' > src/app/api/README.md

@@ -5,8 +5,7 @@
     "dev": "next dev",
     "export": "next export",
     "build": "next build",
-    "postbuild": "./scripts/restore-api-routes.sh",
-    "prebuild": "mkdir -p src/disabled_api && [ -d src/app/api ] && mv src/app/api src/disabled_api/ || true",
+    "deploy": "./scripts/prepare-github-pages.sh",
     "biome-write": "npx @biomejs/biome format --write .",
     "start": "next start",
     "lint": "next lint"
