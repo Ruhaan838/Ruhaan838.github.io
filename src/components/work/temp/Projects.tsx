@@ -2,7 +2,7 @@
 
 import { getPosts } from "@/utils/utils";
 import { Grid } from "@once-ui-system/core";
-import Project from "./Project";
+import Project from "../Project";
 
 interface ProjectsProps {
   range?: [number] | [number, number];

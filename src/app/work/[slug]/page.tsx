@@ -58,6 +58,7 @@ export default async function Project({
   params: Promise<{ slug: string | string[] }>;
 }) {
   const routeParams = await params;
+  const allProjects = getPosts(["src", "app", "work", "projects"]);
   const slugPath = Array.isArray(routeParams.slug)
     ? routeParams.slug.join("/")
     : routeParams.slug || "";
@@ -129,7 +130,7 @@ export default async function Project({
         <Heading as="h2" variant="heading-strong-xl" marginBottom="24">
           Related projects
         </Heading>
-        <Projects exclude={[post.slug]} range={[2]} />
+        <Projects projects={allProjects} exclude={[post.slug]} range={[2]} />
       </Column>
       <ScrollToHash />
     </Column>

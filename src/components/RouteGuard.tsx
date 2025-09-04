@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { routes, protectedRoutes } from "@/resources";
 import { Flex, Spinner, Button, Heading, Column, PasswordInput } from "@once-ui-system/core";
 import NotFound from "@/app/not-found";
+import { checkAuth, authenticate, initAuth } from "@/utils/clientAuth";
 
 interface RouteGuardProps {
   children: React.ReactNode;
@@ -48,9 +49,10 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
 
       if (protectedRoutes[pathname as keyof typeof protectedRoutes]) {
         setIsPasswordRequired(true);
-
-        const response = await fetch("/api/check-auth");
-        if (response.ok) {
+        
+        // Initialize auth and check authentication status client-side
+        initAuth();
+        if (checkAuth()) {
           setIsAuthenticated(true);
         }
       }
@@ -62,13 +64,10 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
   }, [pathname]);
 
   const handlePasswordSubmit = async () => {
-    const response = await fetch("/api/authenticate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
+    // Use client-side authentication instead of API route
+    const success = await authenticate(password);
 
-    if (response.ok) {
+    if (success) {
       setIsAuthenticated(true);
       setError(undefined);
     } else {
