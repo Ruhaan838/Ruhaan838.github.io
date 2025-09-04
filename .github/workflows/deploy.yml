@@ -60,6 +60,9 @@ jobs:
           # Create .nojekyll file to prevent GitHub Pages from using Jekyll
           touch out/.nojekyll
           
+          # Create a CNAME file if you're using a custom domain
+          # echo "yourdomain.com" > out/CNAME
+          
       - name: Restore API routes in source code
         run: |
           # Restore API routes to the source code for reference
