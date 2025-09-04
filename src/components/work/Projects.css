@@ -1,0 +1,33 @@
+/* ensure ProjectCard fills the cell */
+[data-test="project-grid"] > * {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* 1 column mobile, 2 tablet, 3 desktop (matches your blog) */
+.project-grid {
+  display: grid !important;
+  grid-template-columns: repeat(1, 1fr) !important;
+  gap: 16px !important;
+  width: 100% !important;
+  margin: 0 auto var(--space-xl);
+  padding: 0 var(--space-l);
+}
+
+@media (min-width: 550px) {
+  .project-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (min-width: 850px) {
+  .project-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .project-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}

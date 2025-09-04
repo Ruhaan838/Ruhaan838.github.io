@@ -1,0 +1,195 @@
+.selectedCard {
+  border-color: var(--color-accent) !important;
+  border-left-width: 4px !important;
+  opacity: 1 !important;
+}
+
+.nonSelectedCard {
+  opacity: 0.7;
+}
+
+/* Enhanced visibility styles */
+.repoCard {
+  position: relative;
+  z-index: 1;
+  /* Border properties will come from theme.css */
+}
+
+.themeOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  pointer-events: none;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.repoCard {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+  position: relative;
+  background-color: transparent !important;
+  border-radius: 10px !important;
+  /* Border and box-shadow properties will come from theme.css */
+  
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent-weak) !important;
+    box-shadow: 0 8px 24px var(--color-shadow-moderate) !important;
+    
+    .repoName {
+      color: var(--color-accent);
+    }
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: transparent;
+    transition: background-color 0.2s ease;
+  }
+  
+  &:hover::before {
+    background: linear-gradient(90deg, var(--color-accent), rgba(0, 0, 0, 0.1));
+  }
+}
+
+.repoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-neutral-text-weak);
+}
+
+.repoName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+  max-width: 200px; /* Limit width to prevent layout issues */
+  font-size: 1.1rem; /* Slightly reduce font size for long names */
+  color: var(--color-neutral-text-strong);
+}
+
+.repoDate {
+  color: var(--color-neutral-text-weak);
+  font-size: 12px;
+}
+
+.repoDescription {
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  margin-top: -4px;
+  color: var(--color-neutral-text-moderate);
+}
+
+.languageContainer {
+  display: flex;
+  align-items: center;
+}
+
+.languageColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.languageTag {
+  display: inline-block;
+  color: var(--color-neutral-text-moderate);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.actionButton {
+  background: transparent;
+  border: none;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-neutral-text-weak);
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  
+  &:hover {
+    background-color: var(--color-neutral-surface-active);
+    color: var(--color-accent);
+    
+    svg {
+      color: var(--color-accent);
+    }
+  }
+  
+  svg {
+    color: var(--color-neutral-text-weak);
+    margin-right: 2px;
+  }
+  
+  span {
+    font-family: inherit;
+    min-width: 14px;
+    text-align: center;
+  }
+}
+
+.repoFooter {
+  margin-top: 8px;
+  border-top: 1px solid var(--color-neutral-border-weak);
+  padding-top: 10px;
+}
+
+.statsItem {
+  display: flex;
+  align-items: center;
+}
+
+.languageButton {
+  position: relative;
+  border: 1px solid var(--color-neutral-border-moderate) !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 6px 12px !important;
+  transition: all 0.2s ease !important;
+  background-color: var(--language-color-light) !important;
+  box-shadow: 0 1px 3px var(--color-shadow-light) !important;
+  
+  &:hover {
+    border-color: var(--language-color) !important;
+    background-color: var(--language-color-light) !important;
+    box-shadow: 0 2px 5px var(--color-shadow-moderate) !important;
+  }
+}
+
+.selectedLanguageButton {
+  border-color: var(--language-color) !important;
+  background-color: var(--language-color-light) !important;
+  font-weight: 600 !important;
+  color: var(--color-text-primary) !important;
+}
+
+.priorityLanguage {
+  font-weight: 600 !important;
+  position: relative;
+}

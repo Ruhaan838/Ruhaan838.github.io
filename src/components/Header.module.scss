@@ -1,0 +1,50 @@
+@use "./breakpoints.scss" as breakpoints;
+
+.mask {
+    pointer-events: none;
+    backdrop-filter: blur(0.5rem);
+    background: linear-gradient(to bottom, var(--page-background), var(--static-transparent));
+    mask-image: linear-gradient(rgba(0,0,0) 25%, rgba(0, 0, 0, 0) 100%);
+    mask-size: 100% 100%;
+}
+
+.socialIcons {
+  display: flex;
+  align-items: center;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: color 0.2s ease, transform 0.2s ease;
+  padding: 6px;
+  border-radius: 6px;
+  
+  &:hover {
+    color: var(--color-accent-text);
+    transform: translateY(-2px);
+    background: var(--color-neutral-surface-active);
+  }
+}
+
+@media (max-width: breakpoints.$s) {
+    .position {
+        top: auto;
+        bottom: var(--static-space-24);
+    }
+
+    .mask {
+        transform: rotate(180deg);
+        bottom: 0;
+    }
+    
+    .socialIcons {
+        gap: 4px;
+    }
+    
+    .socialLink {
+        padding: 4px;
+    }
+}

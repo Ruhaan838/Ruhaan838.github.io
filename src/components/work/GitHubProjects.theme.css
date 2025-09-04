@@ -1,0 +1,49 @@
+:root {
+  /* Light mode custom variables */
+  --card-bg-light: rgba(255, 255, 255, 0.1);
+  --card-border-light: rgba(0, 0, 0, 0.2);
+  --card-shadow-light: rgba(0, 0, 0, 0.12);
+  
+  /* Dark mode custom variables */
+  --card-bg-dark: rgba(30, 35, 45, 0.1);
+  --card-border-dark: rgba(255, 255, 255, 0.2);
+  --card-shadow-dark: rgba(0, 0, 0, 0.4);
+  
+  /* Make sure borders are visible */
+  --border-width: 2px;
+}
+
+/* Apply theme-specific styles to repos */
+html[data-theme="light"] .repoCard {
+  background: transparent !important;
+  border: var(--border-width) solid var(--card-border-light) !important;
+  box-shadow: 0 4px 12px var(--card-shadow-light) !important;
+  outline: 1px solid rgba(0, 0, 0, 0.05) !important;
+  border-style: solid !important; /* Ensure border is visible */
+  backdrop-filter: blur(2px) !important;
+}
+
+html[data-theme="dark"] .repoCard {
+  background: transparent !important;
+  border: var(--border-width) solid var(--card-border-dark) !important;
+  box-shadow: 0 4px 12px var(--card-shadow-dark) !important;
+  outline: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-style: solid !important; /* Ensure border is visible */
+  backdrop-filter: blur(2px) !important;
+}
+
+/* Common styles for all repo cards, regardless of theme */
+.repoCard {
+  border-width: var(--border-width) !important;
+  border-style: solid !important;
+  border-radius: 10px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: transform 0.2s ease-out, box-shadow 0.3s ease-out !important;
+  background: transparent !important;
+}
+
+.repoCard:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
