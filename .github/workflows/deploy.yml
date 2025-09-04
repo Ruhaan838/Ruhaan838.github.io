@@ -46,10 +46,6 @@ jobs:
         run: |
           # Create a CNAME file if you're using a custom domain
           # echo "yourdomain.com" > out/CNAME
-            cp -r src/disabled_api/api/* src/app/api/
-            # Add README explaining the situation
-            echo '# API Routes in Static Exports\n\nThese API routes are not used in the static export build.\n\nInstead, client-side authentication is used.' > src/app/api/README.md
-          fi
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

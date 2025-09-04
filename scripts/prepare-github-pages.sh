@@ -76,10 +76,16 @@ Instead, we use client-side authentication handled by \`src/utils/clientAuth.ts\
 These files are kept for reference and potential future use with a server-based deployment.
 EOF
 
-# Restore API routes if backup exists
-if [ -d "src/disabled_api" ] && [ "$(ls -A src/disabled_api)" ]; then
-  cp -r src/disabled_api/* src/app/api/
-  echo "API routes restored from backup."
+# Only attempt to restore if the backup directory exists and is not empty
+if [ -d "src/disabled_api" ]; then
+  # Check if there are any files in the directory
+  if [ -n "$(find src/disabled_api -mindepth 1 -print -quit 2>/dev/null)" ]; then
+    echo "Copying files from backup..."
+    cp -r src/disabled_api/* src/app/api/ 2>/dev/null || echo "No files to copy"
+    echo "API routes restored from backup."
+  else
+    echo "Backup directory exists but is empty."
+  fi
 else
   echo "No API route backups found to restore."
 fi
