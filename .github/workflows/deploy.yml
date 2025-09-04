@@ -6,46 +6,74 @@ on:
       - main
   workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
+  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+        
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-      
+          
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+          
       - name: Install dependencies
         run: npm ci
-      
-      - name: Build and prepare for GitHub Pages
+        
+      - name: Remove API routes completely
+        run: |
+          # API routes cause problems with static export
+          rm -rf src/app/api
+        
+      - name: Build with Next.js
         env:
-          # IMPORTANT: Create a repository secret named PAGE_ACCESS_PASSWORD in GitHub
-          # Go to your repository -> Settings -> Secrets and variables -> Actions -> New repository secret
-          # Name it PAGE_ACCESS_PASSWORD and set it to your desired password for protected pages
           NEXT_PUBLIC_PAGE_ACCESS_PASSWORD: ${{ secrets.PAGE_ACCESS_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run build
+      
+      - name: Create important files
         run: |
-          # Run our custom script that handles everything
-          ./scripts/prepare-github-pages.sh
-        
-      - name: Add CNAME if using custom domain
-        run: |
-          # Create a CNAME file if you're using a custom domain
-          # echo "yourdomain.com" > out/CNAME
+          # Create .nojekyll file
+          touch out/.nojekyll
+          
+          # Debug - list files in output directory
+          echo "Contents of output directory:"
+          ls -la out/
+          
+          # Create a placeholder index.html in case the main one is missing
+          if [ ! -f "out/index.html" ]; then
+            echo "Creating fallback index.html"
+            cat > out/index.html << EOF
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <meta charset="UTF-8">
+              <meta http-equiv="refresh" content="0;url=/">
+              <title>Redirecting...</title>
+            </head>
+            <body>
+              <p>If you are not redirected automatically, <a href="/">click here</a>.</p>
+            </body>
+            </html>
+            EOF
+          fi
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

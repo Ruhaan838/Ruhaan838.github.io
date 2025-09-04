@@ -20,9 +20,11 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // For user sites (username.github.io), no basePath is needed
-  // But for debugging, let's ensure our asset prefix is set correctly
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/' : '',
+  // Since this is username.github.io format, we don't need basePath
+  // If using a custom domain, this won't matter either
+  // We're explicitly setting this to empty to avoid any path issues
+  basePath: '',
+  assetPrefix: '',
 };
 
 export default withMDX(nextConfig);
