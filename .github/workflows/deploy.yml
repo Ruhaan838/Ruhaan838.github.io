@@ -48,31 +48,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run build
       
-      - name: Create important files
+      - name: Create .nojekyll file
+        run: touch out/.nojekyll
+        
+      - name: List output directory
+        run: ls -la out/
+      
+      - name: Create fallback index if needed
         run: |
-          # Create .nojekyll file
-          touch out/.nojekyll
-          
-          # Debug - list files in output directory
-          echo "Contents of output directory:"
-          ls -la out/
-          
-          # Create a placeholder index.html in case the main one is missing
           if [ ! -f "out/index.html" ]; then
             echo "Creating fallback index.html"
-            cat > out/index.html << EOF
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <meta charset="UTF-8">
-              <meta http-equiv="refresh" content="0;url=/">
-              <title>Redirecting...</title>
-            </head>
-            <body>
-              <p>If you are not redirected automatically, <a href="/">click here</a>.</p>
-            </body>
-            </html>
-            EOF
+            echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta http-equiv="refresh" content="0;url=/"><title>Redirecting...</title></head><body><p>If you are not redirected automatically, <a href="/">click here</a>.</p></body></html>' > out/index.html
           fi
       
       - name: Upload artifact
