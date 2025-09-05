@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { db } from '@/utils/firebaseClient';
+import { db, firebaseAvailable } from '@/utils/firebaseClient';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Card, Column, Row, Text, Grid, Button } from "@once-ui-system/core";
 import { AdminButton } from './AdminButton';
@@ -103,21 +103,27 @@ export function GitHubProjects() {
   useEffect(() => {
     const load = async () => {
       const defaultNames = DEFAULT_PROJECTS.map(p => p.name);
+      if (!firebaseAvailable() || !db) {
+        console.warn('[Projects] Firebase not available – using defaults only');
+        setSelectedProjects(defaultNames);
+        return;
+      }
       try {
         const ref = doc(db, 'portfolio', 'selectedProjects');
         const snap = await getDoc(ref);
         if (snap.exists()) {
           const data = snap.data();
-            if (Array.isArray(data.names) && data.names.length) {
-              setSelectedProjects(data.names as string[]);
-              return;
-            }
+          console.log('[Projects] Loaded Firestore doc:', data);
+          if (Array.isArray(data.names) && data.names.length) {
+            setSelectedProjects(data.names as string[]);
+            return;
+          }
         }
-        // Fallback to defaults if doc missing/invalid
+        console.log('[Projects] Creating initial Firestore doc with defaults');
         setSelectedProjects(defaultNames);
         await setDoc(ref, { names: defaultNames, updatedAt: Date.now() }, { merge: true });
       } catch (e) {
-        console.warn('Firestore load failed, using defaults', e);
+        console.warn('[Projects] Firestore load failed, using defaults', e);
         setSelectedProjects(defaultNames);
       }
     };
@@ -199,11 +205,17 @@ export function GitHubProjects() {
   // Save selected projects to localStorage
   const updateSelectedProjects = async (projects: string[]) => {
     setSelectedProjects(projects);
+    if (!firebaseAvailable() || !db) {
+      console.warn('[Projects] Firebase unavailable – selection not persisted');
+      return;
+    }
     try {
       const ref = doc(db, 'portfolio', 'selectedProjects');
+      console.log('[Projects] Saving selection to Firestore:', projects);
       await setDoc(ref, { names: projects, updatedAt: Date.now() }, { merge: true });
+      console.log('[Projects] Saved successfully');
     } catch (e) {
-      console.error('Failed to persist selection to Firestore', e);
+      console.error('[Projects] Failed to persist selection to Firestore', e);
     }
   };
 

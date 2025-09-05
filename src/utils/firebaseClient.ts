@@ -14,11 +14,32 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-export const getFirebaseApp = (): FirebaseApp => {
+// Simple validation so you immediately see why persistence might fail
+const missingKeys = Object.entries(firebaseConfig)
+  .filter(([, v]) => !v)
+  .map(([k]) => k);
+
+if (typeof window !== 'undefined') {
+  if (missingKeys.length) {
+    console.warn('[Firebase] Missing NEXT_PUBLIC_* env vars:', missingKeys.join(', '));
+  } else {
+    console.log('[Firebase] Config loaded for project:', firebaseConfig.projectId);
+  }
+}
+
+let app: FirebaseApp | null = null;
+
+export const getFirebaseApp = (): FirebaseApp | null => {
+  if (missingKeys.length) return null; // Disable silently if config incomplete
   if (!getApps().length) {
-    initializeApp(firebaseConfig);
+    app = initializeApp(firebaseConfig);
   }
   return getApps()[0]!;
 };
 
-export const db = getFirestore(getFirebaseApp());
+export const db = (() => {
+  const a = getFirebaseApp();
+  return a ? getFirestore(a) : null;
+})();
+
+export const firebaseAvailable = () => !!db;
