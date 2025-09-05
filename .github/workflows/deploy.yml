@@ -30,14 +30,15 @@ jobs:
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
-          
-      - name: Build with next
-        run: |
-          npm install
-          npm run build
-          
-      - name: Prepare for GitHub Pages
+        
+      - name: Pre-build cleanup (remove unsupported features)
         run: bash ./scripts/prepare-github-pages.sh
+
+      - name: Build static site
+        run: |
+          npm run build
+          # Ensure .nojekyll inside output so Pages serves assets as-is
+          touch out/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

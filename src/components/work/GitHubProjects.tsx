@@ -120,44 +120,68 @@ export function GitHubProjects() {
   const fetchRepos = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
-      console.log('Fetching GitHub repositories...');
-      // Use our own API route to avoid CORS issues
-      const response = await fetch('/api/github-repos');
-      
-      if (!response.ok) {
-        console.error(`API error: Status ${response.status}`);
-        throw new Error(`Failed to fetch repositories: ${response.status}`);
+      console.log('Fetching GitHub repositories (client-side)...');
+
+      // Simple 5 minute cache to reduce rate limit hits (60/hr unauthenticated)
+      const CACHE_KEY = 'github_repos_cache_v1';
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Date.now() - parsed.timestamp < 5 * 60 * 1000) {
+          setRepos(parsed.data);
+          setIsLoading(false);
+          return;
+        }
       }
-      
-      const data = await response.json();
-      console.log(`Fetched ${data.length} repositories from GitHub`);
-      
-      // Log the first repo to help with debugging
-      if (data.length > 0) {
-        console.log('Sample repo data:', {
-          name: data[0].name,
-          id: data[0].id,
-          created_at: data[0].created_at
-        });
+
+      const ghResponse = await fetch('https://api.github.com/users/Ruhaan838/repos?per_page=100&sort=updated', {
+        headers: {
+          'Accept': 'application/vnd.github+json'
+        }
+      });
+
+      if (!ghResponse.ok) {
+        // Rate limit specific messaging
+        if (ghResponse.status === 403) {
+          setError('GitHub rate limit reached. Showing default projects. Try again later.');
+        } else {
+          setError('Failed to load repositories. Using default projects instead.');
+        }
+        console.error('GitHub API error status:', ghResponse.status);
+        setRepos(DEFAULT_PROJECTS);
+        setIsLoading(false);
+        return;
       }
-      
+
+      const data: any[] = await ghResponse.json();
       if (!Array.isArray(data) || data.length === 0) {
-        // Use default projects if API returns empty
-        console.log('Using default projects as API returned empty array');
+        console.log('GitHub API returned empty array, using defaults');
         setRepos(DEFAULT_PROJECTS);
       } else {
-        // Sort by creation date (newest first)
-        const sortedRepos = data.sort((a: GitHubRepo, b: GitHubRepo) => 
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        );
-        setRepos(sortedRepos);
+        // Filter out forks / archived for a cleaner list
+        const cleaned = data
+          .filter(r => !r.fork && !r.archived)
+          .map(r => ({
+            id: r.id,
+            name: r.name,
+            description: r.description || '',
+            html_url: r.html_url,
+            created_at: r.created_at,
+            language: r.language,
+            stargazers_count: r.stargazers_count,
+            forks_count: r.forks_count
+          })) as GitHubRepo[];
+
+        const sorted = cleaned.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        setRepos(sorted);
+        // Save cache
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data: sorted }));
       }
     } catch (err) {
       console.error('Error fetching repos:', err);
       setError('Failed to load repositories. Using default projects instead.');
-      // Fall back to default projects
       setRepos(DEFAULT_PROJECTS);
     } finally {
       setIsLoading(false);
@@ -385,7 +409,7 @@ export function GitHubProjects() {
         <Text variant="body-default-m">
           {isAdminMode 
             ? "No repositories found. Try refreshing the page."
-            : "No selected repositories to display. Enter admin mode (Ctrl+Alt+`) to select repositories."}
+            : "No selected repositories to display."}
         </Text>
       )}
     </Column>
