@@ -30,14 +30,14 @@ jobs:
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        with:
-          static-site-directory: next
-          node-version: '18'
           
       - name: Build with next
         run: |
           npm install
           npm run build
+          
+      - name: Prepare for GitHub Pages
+        run: bash ./scripts/prepare-github-pages.sh
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

@@ -24,9 +24,13 @@ fi
 echo "Creating .nojekyll file..."
 touch .nojekyll
 
-# 3. Build the site
-echo "Building site..."
-npm run build
+# 3. Ensure the out directory exists
+echo "Checking output directory..."
+mkdir -p out
+
+# 4. Copy .nojekyll to the out directory
+echo "Copying .nojekyll to output directory..."
+cp .nojekyll out/
 
 # 4. Create .nojekyll in output directory
 echo "Adding .nojekyll to output directory..."
