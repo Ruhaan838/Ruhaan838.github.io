@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { db } from '@/utils/firebaseClient';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Card, Column, Row, Text, Grid, Button } from "@once-ui-system/core";
 import { AdminButton } from './AdminButton';
 import styles from './GitHubProjects.module.scss';
@@ -97,23 +99,29 @@ export function GitHubProjects() {
   const [error, setError] = useState<string | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
 
-  // Initialize with default selected projects
+  // Initialize selected projects from Firestore (fallback to defaults on failure)
   useEffect(() => {
-    const initialSelectedProjects = DEFAULT_PROJECTS.map(project => project.name);
-    setSelectedProjects(initialSelectedProjects);
-    
-    // Try to load from localStorage if available
-    try {
-      const savedProjects = localStorage.getItem('selectedProjects');
-      if (savedProjects) {
-        setSelectedProjects(JSON.parse(savedProjects));
-      } else {
-        // Save defaults to localStorage
-        localStorage.setItem('selectedProjects', JSON.stringify(initialSelectedProjects));
+    const load = async () => {
+      const defaultNames = DEFAULT_PROJECTS.map(p => p.name);
+      try {
+        const ref = doc(db, 'portfolio', 'selectedProjects');
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+          const data = snap.data();
+            if (Array.isArray(data.names) && data.names.length) {
+              setSelectedProjects(data.names as string[]);
+              return;
+            }
+        }
+        // Fallback to defaults if doc missing/invalid
+        setSelectedProjects(defaultNames);
+        await setDoc(ref, { names: defaultNames, updatedAt: Date.now() }, { merge: true });
+      } catch (e) {
+        console.warn('Firestore load failed, using defaults', e);
+        setSelectedProjects(defaultNames);
       }
-    } catch (err) {
-      console.error('Error loading saved projects:', err);
-    }
+    };
+    load();
   }, []);
 
   // Function to fetch repositories from GitHub
@@ -189,13 +197,14 @@ export function GitHubProjects() {
   };
 
   // Save selected projects to localStorage
-  const updateSelectedProjects = (projects: string[]) => {
-    try {
-      localStorage.setItem('selectedProjects', JSON.stringify(projects));
-    } catch (err) {
-      console.error('Error saving projects:', err);
-    }
+  const updateSelectedProjects = async (projects: string[]) => {
     setSelectedProjects(projects);
+    try {
+      const ref = doc(db, 'portfolio', 'selectedProjects');
+      await setDoc(ref, { names: projects, updatedAt: Date.now() }, { merge: true });
+    } catch (e) {
+      console.error('Failed to persist selection to Firestore', e);
+    }
   };
 
   // Toggle a project's selection status
