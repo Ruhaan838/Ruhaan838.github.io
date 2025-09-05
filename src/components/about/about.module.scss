@@ -9,14 +9,26 @@
 }
 
 .avatar {
-    position: sticky;
-    height: fit-content;
-    top: var(--static-space-64);
+    position: static; // remove sticky everywhere to prevent jump
+    height: auto;
+    top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--static-space-12);
+    margin-top: var(--static-space-32);
+    margin-bottom: var(--static-space-32);
 }
 
 @media (max-width: breakpoints.$s) {
     .avatar {
+        position: static; // no sticky on small screens
         top: auto;
+        margin-top: var(--static-space-16);
+        margin-bottom: var(--static-space-24);
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 
     .textAlign {
@@ -25,5 +37,12 @@
 
     .blockAlign {
         align-self: center;
+    }
+
+    // Limit avatar image size on very small screens
+    .avatar :global(img),
+    .avatar :global(svg) {
+        max-width: 180px;
+        max-height: 180px;
     }
 }

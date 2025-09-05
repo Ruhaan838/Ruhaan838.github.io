@@ -31,8 +31,10 @@
 
 @media (max-width: breakpoints.$s) {
     .position {
-        top: auto;
-        bottom: var(--static-space-24);
+  position: static !important; // let it flow normally
+  top: auto;
+  bottom: auto;
+  margin-bottom: var(--static-space-16); // space below header
     }
 
     .mask {
@@ -46,5 +48,10 @@
     
     .socialLink {
         padding: 4px;
+    }
+
+    // Optional: shrink padding on the inner bar when mobile
+    .position [data-border] {
+      padding: 4px !important;
     }
 }
